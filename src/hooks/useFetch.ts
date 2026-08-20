@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
+import { FetchResult } from '../types';
 
-export function useFetch(url) {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+export function useFetch<T>(url: string): FetchResult<T> {
+  const [data, setData] = useState<T | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!url) return;
 
-    // 1 Create AbortController instance for request cancellation
     const controller = new AbortController();
     const { signal } = controller;
 
@@ -18,17 +18,18 @@ export function useFetch(url) {
 
       try {
         const response = await fetch(url, { signal });
-
         if (!response.ok) {
           throw new Error(`HTTP Error: ${response.status}`);
         }
-
-        const result = await response.json();
+        const result: T = await response.json();
         setData(result);
-      } catch (err) {
-        // Suppress AbortError triggered during unmount or fast parameter changes
-        if (err.name !== 'AbortError') {
-          setError(err.message || 'Failed to fetch data');
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          if (err.name !== 'AbortError') {
+            setError(err.message || 'Failed to fetch data');
+          }
+        } else {
+          setError('An unknown error occurred');
         }
       } finally {
         setLoading(false);
@@ -37,7 +38,6 @@ export function useFetch(url) {
 
     fetchData();
 
-    // 2 useEffect Cleanup: Cancels pending fetch requests when URL updates
     return () => {
       controller.abort();
     };
