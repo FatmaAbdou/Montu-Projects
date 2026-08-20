@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { useFetch } from '../hooks/useFetch';
+import { Post } from '../types';
 
 export default function PostWidget() {
-  const [postId, setPostId] = useState(1);
-
-  // Consume Custom Hook (Fetch + Cleanup + States)
-  const { data: post, loading, error } = useFetch(
+  const [postId, setPostId] = useState<number>(1);
+  const { data: post, loading, error } = useFetch<Post>(
     `https://jsonplaceholder.typicode.com/posts/${postId}`
   );
 
@@ -18,7 +17,6 @@ export default function PostWidget() {
         </span>
       </div>
 
-      {/* Dynamic Controls */}
       <div className="flex items-center gap-3 mb-4">
         <button
           onClick={() => setPostId((prev) => Math.max(1, prev - 1))}
@@ -39,12 +37,8 @@ export default function PostWidget() {
 
       <hr className="border-slate-200 dark:border-slate-800 my-4" />
 
-      {/* Conditional UI Rendering */}
       {loading && <p className="text-slate-500 dark:text-slate-400">Fetching post data...</p>}
-
-      {error && !loading && (
-        <p className="text-red-500 font-medium">Error: {error}</p>
-      )}
+      {error && !loading && <p className="text-red-500 font-medium">Error: {error}</p>}
 
       {!loading && !error && post && (
         <div>

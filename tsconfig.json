@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode (Vite) */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Strict Type-Checking Options */
+    "strict": true,                         /* Enables all core strict checking options */
+    "noUncheckedIndexedAccess": true,       /* Adds undefined to types when accessing arrays/objects by index */
+    "exactOptionalPropertyTypes": true,     /* Prevents assigning undefined to optional properties unless explicitly typed */
+
+    /* Additional Linting & Safety Checks */
+    "noUnusedLocals": true,                 /* Flags unused local variables */
+    "noUnusedParameters": true,             /* Flags unused function parameters */
+    "noFallthroughCasesInSwitch": true,     /* Ensures switch statements don't accidentally fall through */
+    "noImplicitReturns": true,              /* Ensures all code paths in a function return a value */
+    "noImplicitOverride": true,             /* Ensures override keyword is used when extending classes */
+    "forceConsistentCasingInFileNames": true /* Prevents cross-platform file import casing bugs */
+  },
+  "include": ["src"]
+}
